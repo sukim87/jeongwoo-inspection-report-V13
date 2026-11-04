@@ -313,7 +313,7 @@ JSON 형식으로만 답변하세요.
             contents=prompt,
             config=types.GenerateContentConfig(
                 response_mime_type="application/json",
-                response_schema=response_schema,
+                response_json_schema=response_schema,
                 temperature=0.2,
             ),
         )
