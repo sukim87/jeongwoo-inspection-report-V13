@@ -15,6 +15,8 @@ from openpyxl.styles import Alignment, Font
 from PIL import Image, ImageOps, ImageFilter, ImageEnhance
 
 TEMPLATE = Path(__file__).resolve().parents[1] / 'templates' / '검사결과서.xlsx'
+REPORT_CI = Path(__file__).resolve().parents[1] / 'assets' / 'report_ci.jpg'
+
 SLOTS = [
     ('검사결과서', 'A21'), ('검사결과서', 'G21'),
     ('검사결과서(을지)', 'A11'), ('검사결과서(을지)', 'G11'),
@@ -75,6 +77,14 @@ def build_report(data, photos, rotations, modes=None):
     quick = wb['간편입력']
     main = wb['검사결과서']
     extra = wb['검사결과서(을지)']
+    
+     # 검사결과서 전용 Jeongwoo CI 삽입
+    if REPORT_CI.exists():
+        for report_sheet in (main, extra):
+            ci_image = XLImage(str(REPORT_CI))
+            ci_image.width = 95
+            ci_image.height = 75
+            report_sheet.add_image(ci_image, 'A1')
 
     # Open the actual inspection report first and keep the data-entry sheet hidden.
     quick.sheet_state = 'hidden'
